@@ -132,13 +132,19 @@ const vuePlugin = (opts: Options = {}) => <esbuild.Plugin>{
                 ? crypto.createHash("md5").update(filename).digest().toString("hex").substring(0, 8)
                 : random(4).toString("hex");
 
-            console.log(JSON.parse(JSON.stringify({args}, null, 4)));
-
             const { descriptor } = sfc.parse(source, {
                 filename,
-                sourceRoot: args.path,
             });
-            const script = (descriptor.script || descriptor.scriptSetup) ? sfc.compileScript(descriptor, { id }) : undefined;
+            const script = (descriptor.script || descriptor.scriptSetup) ? sfc.compileScript(descriptor, { id,
+            fs: {
+                readFile(file) {
+                    return fs.readFileSync(file, 'utf8');
+                },
+                fileExists(file) {
+                    return fs.existsSync(file);
+                },
+            },
+            }) : undefined;
 
             const dataId = "data-v-" + id;
             let code = "";
