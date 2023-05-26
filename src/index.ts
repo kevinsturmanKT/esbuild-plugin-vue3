@@ -132,6 +132,8 @@ const vuePlugin = (opts: Options = {}) => <esbuild.Plugin>{
                 ? crypto.createHash("md5").update(filename).digest().toString("hex").substring(0, 8)
                 : random(4).toString("hex");
 
+            console.log(JSON.parse(JSON.stringify({args}, null, 4)));
+
             const { descriptor } = sfc.parse(source, {
                 filename,
                 sourceRoot: args.path,
