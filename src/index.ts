@@ -133,7 +133,8 @@ const vuePlugin = (opts: Options = {}) => <esbuild.Plugin>{
                 : random(4).toString("hex");
 
             const { descriptor } = sfc.parse(source, {
-                filename
+                filename,
+                sourceRoot: args.path,
             });
             const script = (descriptor.script || descriptor.scriptSetup) ? sfc.compileScript(descriptor, { id }) : undefined;
 
